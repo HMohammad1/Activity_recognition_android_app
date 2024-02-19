@@ -136,6 +136,10 @@ public class MainActivity extends AppCompatActivity {
     // prediction tracking
     private int carCount;
     private int busCount;
+    // steps tracking
+    private float initialSteps = 0;
+    private float finalSteps = 0;
+    private boolean initialStepsBool = true;
 
 
     @Override
@@ -374,6 +378,9 @@ public class MainActivity extends AppCompatActivity {
             value = 0;
             startTimeMillis = 0;
             durationMillis = System.currentTimeMillis();
+            initialSteps = 0;
+            finalSteps = 0;
+            initialStepsBool = true;
             isServiceRunning = true;
         } else {
             // Stop the location service
@@ -406,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
 
                 FileWriter writer = new FileWriter(file, true);
 
-                String locationInfo = "Car count: " + carCount + " Bus count: " + busCount + " Near Bus stop count: " + busStopCount;
+                String locationInfo = "Car count: " + carCount + " Bus count: " + busCount + " Near Bus stop count: " + busStopCount + " Inital step count: " + initialSteps + " Final step count: " + finalSteps;
                 writer.write(locationInfo);
 
                 writer.close();
@@ -790,6 +797,11 @@ public class MainActivity extends AppCompatActivity {
                 float steps = intent.getFloatExtra("steps", 0);
                 TextView tvSteps = findViewById(R.id.tvSteps);
                 tvSteps.setText("Steps: " + String.valueOf(steps));
+                if (initialStepsBool) {
+                    initialSteps = steps;
+                    initialStepsBool = false;
+                }
+                finalSteps = steps;
             }
 
             if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
