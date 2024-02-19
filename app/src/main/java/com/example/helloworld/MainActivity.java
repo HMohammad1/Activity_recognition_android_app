@@ -324,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBtnClick(View view) {
+        // testing commit
         TextView tvLat = findViewById(R.id.tvLat);
         TextView tvLong = findViewById(R.id.tvLong);
         TextView accX = findViewById(R.id.tvX);
