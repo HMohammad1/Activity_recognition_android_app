@@ -91,3 +91,4 @@ Prediction for home testing:
 1. Car count: 24 Bus count: 61 Near Bus stop count: 6 Inital step count: 0.0 Final step count: 0.0 - 15m radius 20 seconds
 2. Car count: 24 Bus count: 61 Near Bus stop count: 7 Inital step count: 0.0 Final step count: 0.0 - 16m radius 20 seconds
 3. Car count: 24 Bus count: 61 Near Bus stop count: 10 Inital step count: 0.0 Final step count: 0.0 - 17m radius 20 second
+4. Car count: 23 Bus count: 61 Near Bus stop count: 9 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [2] BusRouteInt: 172 NotBusRouteInt: 0

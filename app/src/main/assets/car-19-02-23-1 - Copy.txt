@@ -99,6 +99,10 @@
 99,9.012479,6.197730,0.482260,4.119958,8.160187,1.014319,1016.499756,car,VEHICLE,ENTER,55.927414,-3.164973,15:30:44,55.927228,-3.164909,car
 100,6.968924,8.492741,0.477737,4.091230,8.173640,1.042199,1016.616577,car,VEHICLE,ENTER,55.926929,-3.165046,15:30:54,55.926857,-3.165121,car
 Car count: 40 Bus count: 59 Near Bus stop count: 5 Inital step count: 0.0 Final step count: 45.0
+Howe Street - Cameron-Toll
 Prediction for home testing:
 1. Car count: 39 Bus count: 59 Near Bus stop count: 5 Inital step count: 0.0 Final step count: 0.0 - 25m radius 20 second
 2. Car count: 39 Bus count: 59 Near Bus stop count: 1 Inital step count: 0.0 Final step count: 0.0 - 15m radius 20 second
+3. Car count: 39 Bus count: 59 Near Bus stop count: 1 Inital step count: 0.0 Final step count: 0.0 - 16m radius 20 second
+4. Car count: 39 Bus count: 59 Near Bus stop count: 1 Inital step count: 0.0 Final step count: 0.0 - 17m radius 20 second
+5. Car count: 38 Bus count: 60 Near Bus stop count: 1 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [] BusRouteInt: 180 NotBusRouteInt: 18

@@ -53,5 +53,6 @@
 53,19.103846,2.938851,2.390096,4.605059,6.147896,1.014876,1013.933594,car,VEHICLE,ENTER,55.943470,-3.203598,14:23:12,55.942926,-3.203623,bus
 54,12.202248,3.690361,2.320287,4.605545,6.203264,1.011603,1013.898682,car,VEHICLE,ENTER,55.942315,-3.203458,14:23:32,55.941894,-3.203390,bus
 Car count: 11 Bus count: 42 Near Bus stop count: 1 Inital step count: 0.0 Final step count: 54.0
+Home - Leven Street
 Prediction for home testing:
-1. 
+1. Car count: 10 Bus count: 42 Near Bus stop count: 0 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [14] BusRouteInt: 59 NotBusRouteInt: 47

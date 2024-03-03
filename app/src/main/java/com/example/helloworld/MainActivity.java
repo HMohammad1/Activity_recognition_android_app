@@ -69,6 +69,7 @@ import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -268,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
     public void onLoad(View view) {
         try {
             AssetManager assetManager = getAssets();
-            InputStream is = assetManager.open("bus-19-02-23-4.txt");
+            InputStream is = assetManager.open("car-19-02-23-2.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -315,10 +316,19 @@ public class MainActivity extends AppCompatActivity {
         tvBus.setMovementMethod(new ScrollingMovementMethod());
 
         if (lat != 0.0 && lonG != 0.0) {
-            BusStopCallback callback = resultLength -> {
-                System.out.println(resultLength);
-                runOnUiThread(() -> {
-                });
+            BusStopCallback callback = new BusStopCallback() {
+                @Override
+                public void onResult(int resultLength) {
+                    System.out.println(resultLength);
+                    runOnUiThread(() -> {
+                    });
+                }
+                @Override
+                public void onAllBusStops(ArrayList<String> busses) {
+                    for (int i=0; i < busses.size(); i++) {
+                        System.out.println(busses.get(i) + " bus stop code");
+                    }
+                }
             };
             api.getClosestBusStops(requestQueue, lat, lonG, Integer.parseInt(edtTxtFName.getText().toString()), tvBus, callback);
         } else {
@@ -414,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
 
                 FileWriter writer = new FileWriter(file, true);
 
-                String locationInfo = "Car count: " + carCount + " Bus count: " + busCount + " Near Bus stop count: " + busStopCount + " Inital step count: " + initialSteps + " Final step count: " + finalSteps;
+                String locationInfo = "Car count: " + carCount + " Bus count: " + busCount + " Near Bus stop count: " + busStopCount + " Inital step count: " + initialSteps + " Final step count: " + finalSteps + " Potential Busses: " + busesForRoutes.toString() + " BusRouteInt: " + busRouteInt + " NotBusRouteInt: " + notBusRouteInt;
                 writer.write(locationInfo);
                 System.out.println(locationInfo);
 
@@ -605,60 +615,60 @@ public class MainActivity extends AppCompatActivity {
 
 
         try {
-            //testSenC ++;
-
-            JSONObject postData = new JSONObject();
-            postData.put("avgSpeed", avgS);
-            postData.put("standardD", standardDeviation);
-            postData.put("avgX", avgX);
-            postData.put("avgY", avgY);
-            postData.put("avgZ", avgZ);
-            postData.put("gForce", avgGF);
-            postData.put("barometer", avgBar);
-            postData.put("transport", edtTxtTransport.getText());
-            postData.put("activityType", activityType);
-            postData.put("transitionType", transitionType);
-            postData.put("lat", lat2.get(0));
-            postData.put("long", long2.get(0));
-            postData.put("lat2", lat2.get(1));
-            postData.put("long2", long2.get(1));
-            postData.put("time", formattedTime);
-            postData.put("prediction", prediction);
-
-            JSONObject postData2 = new JSONObject();
-            postData2.put("speed", avgS);
-            postData2.put("standardD", standardDeviation);
-            postData2.put("avgX", avgX);
-            postData2.put("avgY", avgY);
-            postData2.put("avgZ", avgZ);
-            postData2.put("gForce", avgGF);
-            postData2.put("bar", avgBar);
+            testSenC ++;
 
 //            JSONObject postData = new JSONObject();
-//            postData.put("avgSpeed", testSpeed.get(testSenC));
-//            postData.put("standardD", testStandardD.get(testSenC));
-//            postData.put("avgX", testX.get(testSenC));
-//            postData.put("avgY", testY.get(testSenC));
-//            postData.put("avgZ", testZ.get(testSenC));
-//            postData.put("gForce", testGForce.get(testSenC));
-//            postData.put("barometer", testBar.get(testSenC));
+//            postData.put("avgSpeed", avgS);
+//            postData.put("standardD", standardDeviation);
+//            postData.put("avgX", avgX);
+//            postData.put("avgY", avgY);
+//            postData.put("avgZ", avgZ);
+//            postData.put("gForce", avgGF);
+//            postData.put("barometer", avgBar);
 //            postData.put("transport", edtTxtTransport.getText());
 //            postData.put("activityType", activityType);
 //            postData.put("transitionType", transitionType);
-//            postData.put("lat", testLat1.get(testSenC));
-//            postData.put("long", testLong1.get(testSenC));
-//            postData.put("lat2", testLat2.get(testSenC));
-//            postData.put("long2", testLong2.get(testSenC));
+//            postData.put("lat", lat2.get(0));
+//            postData.put("long", long2.get(0));
+//            postData.put("lat2", lat2.get(1));
+//            postData.put("long2", long2.get(1));
 //            postData.put("time", formattedTime);
+//            postData.put("prediction", prediction);
 //
 //            JSONObject postData2 = new JSONObject();
-//            postData2.put("speed", testSpeed.get(testSenC));
-//            postData2.put("standardD", testStandardD.get(testSenC));
-//            postData2.put("avgX", testX.get(testSenC));
-//            postData2.put("avgY", testY.get(testSenC));
-//            postData2.put("avgZ", testZ.get(testSenC));
-//            postData2.put("gForce", testGForce.get(testSenC));
-//            postData2.put("bar", testBar.get(testSenC));
+//            postData2.put("speed", avgS);
+//            postData2.put("standardD", standardDeviation);
+//            postData2.put("avgX", avgX);
+//            postData2.put("avgY", avgY);
+//            postData2.put("avgZ", avgZ);
+//            postData2.put("gForce", avgGF);
+//            postData2.put("bar", avgBar);
+
+            JSONObject postData = new JSONObject();
+            postData.put("avgSpeed", testSpeed.get(testSenC));
+            postData.put("standardD", testStandardD.get(testSenC));
+            postData.put("avgX", testX.get(testSenC));
+            postData.put("avgY", testY.get(testSenC));
+            postData.put("avgZ", testZ.get(testSenC));
+            postData.put("gForce", testGForce.get(testSenC));
+            postData.put("barometer", testBar.get(testSenC));
+            postData.put("transport", edtTxtTransport.getText());
+            postData.put("activityType", activityType);
+            postData.put("transitionType", transitionType);
+            postData.put("lat", testLat1.get(testSenC));
+            postData.put("long", testLong1.get(testSenC));
+            postData.put("lat2", testLat2.get(testSenC));
+            postData.put("long2", testLong2.get(testSenC));
+            postData.put("time", formattedTime);
+
+            JSONObject postData2 = new JSONObject();
+            postData2.put("speed", testSpeed.get(testSenC));
+            postData2.put("standardD", testStandardD.get(testSenC));
+            postData2.put("avgX", testX.get(testSenC));
+            postData2.put("avgY", testY.get(testSenC));
+            postData2.put("avgZ", testZ.get(testSenC));
+            postData2.put("gForce", testGForce.get(testSenC));
+            postData2.put("bar", testBar.get(testSenC));
 
             TextView tvResponse = findViewById(R.id.tvResponse);
             TextView tvPrediction = findViewById(R.id.tvPrediction);
@@ -680,20 +690,20 @@ public class MainActivity extends AppCompatActivity {
                 busCount ++;
             }
 
-            try {
-                logID ++;
-
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "trip.txt");
-
-                FileWriter writer = new FileWriter(file, true);
-
-                String locationInfo = String.format("%d,%f,%f,%f,%f,%f,%f,%f,%s,%s,%s,%f,%f,%s,%f,%f,%s\n", logID, avgS, standardDeviation, avgX, avgY, avgZ, avgGF, avgBar, edtTxtTransport.getText(), activityType, transitionType, lat2.get(0), long2.get(0), formattedTime, lat2.get(1), long2.get(1), prediction);
-                writer.write(locationInfo);
-
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                logID ++;
+//
+//                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "trip.txt");
+//
+//                FileWriter writer = new FileWriter(file, true);
+//
+//                String locationInfo = String.format("%d,%f,%f,%f,%f,%f,%f,%f,%s,%s,%s,%f,%f,%s,%f,%f,%s\n", logID, avgS, standardDeviation, avgX, avgY, avgZ, avgGF, avgBar, edtTxtTransport.getText(), activityType, transitionType, lat2.get(0), long2.get(0), formattedTime, lat2.get(1), long2.get(1), prediction);
+//                writer.write(locationInfo);
+//
+//                writer.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 
             // for testing
 
@@ -707,10 +717,10 @@ public class MainActivity extends AppCompatActivity {
             lat2.clear();
             long2.clear();
 
-//            if (Integer.parseInt(testID.get(testSenC)) == Integer.parseInt(testID.get(testID.size() - 1))) {
-//                Button btn = findViewById(R.id.btnStartServices);
-//                btn.performClick();
-//            }
+            if (Integer.parseInt(testID.get(testSenC)) == Integer.parseInt(testID.get(testID.size() - 1))) {
+                Button btn = findViewById(R.id.btnStartServices);
+                btn.performClick();
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -728,6 +738,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Float> g = new ArrayList<>();
     private ArrayList<String> t = new ArrayList<>();
+    private String busStopCode;
+    private int busRouteInt;
+    private int notBusRouteInt;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -746,26 +759,28 @@ public class MainActivity extends AppCompatActivity {
                 tvLat.setText("Lat: " + latV);
                 tvLong.setText("Long: " + longV);
                 tvSpeed.setText(String.valueOf(speedV));
-                lat = latV;
-                lonG = longV;
+//                lat = latV;
+//                lonG = longV;
+//                lat = 55.931848;
+//                lonG = -3.145822;
                 speed.add(speedV);
                 lat2.add(latV);
                 long2.add(longV);
 
                 // for testing
 
-//                if (firstLat) {
-//                    testLocC ++;
-//                    lat = testLat1.get(testLocC);
-//                    lonG = testLong1.get(testLocC);
-//                    firstLat = false;
-//                    //secondLat = true;
-//                } else {
-//                    second ++;
-//                    lat = testLat2.get(second);
-//                    lonG = testLong2.get(second);
-//                    firstLat = true;
-//                }
+                if (firstLat) {
+                    testLocC ++;
+                    lat = testLat1.get(testLocC);
+                    lonG = testLong1.get(testLocC);
+                    firstLat = false;
+                    //secondLat = true;
+                } else {
+                    second ++;
+                    lat = testLat2.get(second);
+                    lonG = testLong2.get(second);
+                    firstLat = true;
+                }
 
 
 
@@ -785,16 +800,23 @@ public class MainActivity extends AppCompatActivity {
                     startTimeMillis = System.currentTimeMillis();
                 }
 
-                BusStopCallback callback = resultLength -> {
-                    //System.out.println(resultLength);
-                    if (resultLength > 0) {
-                        //System.out.println("Near bus stop");
-                        value = resultLength;
-                    } else {
-                        value = 0;
+                BusStopCallback callback = new BusStopCallback() {
+                    @Override
+                    public void onResult(int resultLength) {
+                        if (resultLength > 0) {
+                            //System.out.println("Near bus stop");
+                            value = resultLength;
+                        } else {
+                            value = 0;
+                        }
                     }
-                    runOnUiThread(() -> {
-                    });
+                    @Override
+                    public void onAllBusStops(ArrayList<String> busses) {
+                        busStopCode = busses.get(0);
+                        for (int i=0; i < busses.size(); i++) {
+                            System.out.println(busses.get(i) + " bus stop code");
+                        }
+                    }
                 };
 
                 api.getClosestStops(requestQueue, lat, lonG, Integer.parseInt(edtRadius.getText().toString()), callback);
@@ -817,29 +839,46 @@ public class MainActivity extends AppCompatActivity {
                 BusRouteCallback callback2 = result -> {
                     busRoutes = result;
                     for (String s: busRoutes) {
-                        System.out.println(s + " from callback2");
+                        //System.out.println(s + " from callback2");
                     }
                     if (busRoutes.size() == 0) {
-                        System.out.println("EMPTY bus routes");
+                        notBusRouteInt ++;
+                        System.out.println(notBusRouteInt + " not bus route int");
+                        //System.out.println("EMPTY bus routes");
+                    } else {
+                        busRouteInt ++;
+                        System.out.println(busRouteInt + " bus route int");
                     }
                     runOnUiThread(() -> {
                     });
                 };
 
                 BusRouteCallback callback3 = result -> {
-                    busesForRoutes = result;
+                    if (busesForRoutes.isEmpty()) {
+                        busesForRoutes = result;
+                        System.out.println("bussesForRoutes empty called " + busesForRoutes.toString());
+                    } else {
+                        List<String> filteredNewBuses = result.stream()
+                                .filter(busesForRoutes::contains)
+                                .collect(Collectors.toList());
+                        System.out.println("filtered array called " + filteredNewBuses.toString());
+                        if (!filteredNewBuses.isEmpty()) {
+                            busesForRoutes.retainAll(filteredNewBuses);
+                        }
+                        System.out.println("new bus routes called " + busesForRoutes.toString());
+                    }
                     for (String s: busesForRoutes) {
                         System.out.println(s);
                     }
-                    if (busesForRoutes.size() == 0) {
-                        System.out.println("EMPTY bus routes");
-                    }
+//                    if (busesForRoutes.size() == 0) {
+//                        System.out.println("EMPTY bus routes");
+//                    }
                     runOnUiThread(() -> {
                     });
                 };
 
-                api.OnBusRoute(requestQueue, 55.939440, -3.104773, 10, callback2);
-                api.GetBusses(requestQueue, "502532562", callback3);
+                api.OnBusRoute(requestQueue, lat, lonG, 10, callback2);
+                api.GetBusses(requestQueue, busStopCode, callback3);
 
             }
 

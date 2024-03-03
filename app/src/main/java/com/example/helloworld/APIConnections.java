@@ -63,15 +63,18 @@ public class APIConnections {
                 response -> {
                     try {
                         JSONArray results = response.getJSONArray("results");
+                        ArrayList<String> busStops = new ArrayList<>();
                         //System.out.println("length" + results.length());
                         for (int i = 0; i < results.length(); i++) {
                             JSONObject busStopObject = results.getJSONObject(i);
+                            busStops.add(String.valueOf(busStopObject.optInt("osm_id")));
                             int gid = busStopObject.optInt("osm_id");
                             String name = busStopObject.optString("name");
                             sb.append("OSM_ID: ").append(gid).append(", Name: ").append(name).append("\n");
                         }
                         tv.setText(sb.toString());
                         callback.onResult(results.length());
+                        callback.onAllBusStops(busStops);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -97,7 +100,13 @@ public class APIConnections {
                 response -> {
                     try {
                         JSONArray results = response.getJSONArray("results");
+                        ArrayList<String> busStops = new ArrayList<>();
+                        for (int i = 0; i < results.length(); i++) {
+                            JSONObject busStopObject = results.getJSONObject(i);
+                            busStops.add(String.valueOf(busStopObject.optInt("osm_id")));
+                        }
                         callback.onResult(results.length());
+                        callback.onAllBusStops(busStops);
                     } catch (JSONException e) {
                         e.printStackTrace();
 
@@ -105,7 +114,10 @@ public class APIConnections {
                 },
                 error -> {
                     Log.d("Error.Response", error.toString());
+                    ArrayList<String> busStops = new ArrayList<>();
+                    busStops.add("0");
                     callback.onResult(0);
+                    callback.onAllBusStops(busStops);
                 });
         queue.add(request);
     }
