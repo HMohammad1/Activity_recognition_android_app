@@ -14,12 +14,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class APIConnections {
 
-    private String ngrok = "https://34421d6b48d0.ngrok.app";
+    private String ngrok = "https://9db56daa2dcd.ngrok.app";
     public void getDistance(RequestQueue queue, double latitude, double longitude) {
         String url = ngrok + "/myapp/distance/";
 
@@ -65,9 +66,9 @@ public class APIConnections {
                         //System.out.println("length" + results.length());
                         for (int i = 0; i < results.length(); i++) {
                             JSONObject busStopObject = results.getJSONObject(i);
-                            int gid = busStopObject.optInt("gid");
+                            int gid = busStopObject.optInt("osm_id");
                             String name = busStopObject.optString("name");
-                            sb.append("GID: ").append(gid).append(", Name: ").append(name).append("\n");
+                            sb.append("OSM_ID: ").append(gid).append(", Name: ").append(name).append("\n");
                         }
                         tv.setText(sb.toString());
                         callback.onResult(results.length());
@@ -105,6 +106,69 @@ public class APIConnections {
                 error -> {
                     Log.d("Error.Response", error.toString());
                     callback.onResult(0);
+                });
+        queue.add(request);
+    }
+
+    public void OnBusRoute(RequestQueue queue, double latitude, double longitude, int radius, BusRouteCallback callback) {
+        String url = ngrok + "/myapp/busRoute/";
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("latitude", latitude);
+            postData.put("longitude", longitude);
+            postData.put("radius", radius);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, postData,
+                response -> {
+                    try {
+                        JSONArray results = response.getJSONArray("results");
+                        ArrayList<String> busRoutes = new ArrayList<>();
+                        for (int i = 0; i < results.length(); i++) {
+                            JSONObject jsonObject = results.getJSONObject(i);
+                            busRoutes.add(jsonObject.getString("name"));
+                        }
+                        callback.onResult(busRoutes);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+                },
+                error -> {
+                    Log.d("Error.Response", error.toString());
+                    ArrayList<String> busRoutes = new ArrayList<>();
+                    callback.onResult(busRoutes);
+                });
+        queue.add(request);
+    }
+
+    public void GetBusses(RequestQueue queue, String stopCode, BusRouteCallback callback) {
+        String url = ngrok + "/myapp/busData/";
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("column_name", stopCode);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, postData,
+                response -> {
+                    try {
+                        JSONArray results = response.getJSONArray("results");
+                        JSONArray busNumbersArray = results.getJSONArray(0);
+                        ArrayList<String> busNumbers = new ArrayList<>();
+                        for (int i = 0; i < busNumbersArray.length(); i++) {
+                            busNumbers.add(busNumbersArray.getString(i));
+                        }
+                        callback.onResult(busNumbers);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    Log.d("Error.Response", error.toString());
+                    ArrayList<String> busRoutes = new ArrayList<>();
+                    callback.onResult(busRoutes);
                 });
         queue.add(request);
     }

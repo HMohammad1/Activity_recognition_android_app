@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Double> testLat2 = new ArrayList<>();
     private ArrayList<Double> testLong2 = new ArrayList<>();
     private ArrayList<String> testTime = new ArrayList<>();
+    private ArrayList<String> testPrediction = new ArrayList<>();
     private int testLocC = -1;
     private int testSenC = -1;
     private boolean firstLat = true;
@@ -127,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
     private int second = -1;
     // Callback
     private String prediction = null;
+    private ArrayList<String> busRoutes = new ArrayList<>();
+    private ArrayList<String> busesForRoutes = new ArrayList<>();
     // Bus stop tracking
     private boolean start = false;
     private int value = 0;
@@ -219,11 +222,6 @@ public class MainActivity extends AppCompatActivity {
                 PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_MUTABLE);
 
         requestQueue = Volley.newRequestQueue(this);
-//        lat2.add(0.0);
-//        lat2.add(0.0);
-//        long2.add(0.0);
-//        long2.add(0.0);
-
     }
 
     @Override
@@ -270,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
     public void onLoad(View view) {
         try {
             AssetManager assetManager = getAssets();
-            InputStream is = assetManager.open("test.txt");
+            InputStream is = assetManager.open("bus-19-02-23-4.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -291,14 +289,15 @@ public class MainActivity extends AppCompatActivity {
                 testTime.add(columns[13]);
                 testLat2.add(Double.valueOf(columns[14]));
                 testLong2.add(Double.valueOf(columns[15]));
+                testPrediction.add(columns[16]);
 
 //                for (String column : columns) {
 //                    System.out.print(column + ",");
 //                }
                 //System.out.println(columns[1]);
             }
-            for (int i = 0; i < testTime.size(); i++) {
-                System.out.println(testTime.get(i));
+            for (int i = 0; i < testID.size(); i++) {
+                System.out.println(testID.get(i));
             }
             reader.close();
         } catch (IOException e) {
@@ -382,6 +381,8 @@ public class MainActivity extends AppCompatActivity {
             finalSteps = 0;
             initialStepsBool = true;
             isServiceRunning = true;
+            firstLat = true;
+            secondLat = false;
         } else {
             // Stop the location service
             stopService(locationIntent);
@@ -415,11 +416,31 @@ public class MainActivity extends AppCompatActivity {
 
                 String locationInfo = "Car count: " + carCount + " Bus count: " + busCount + " Near Bus stop count: " + busStopCount + " Inital step count: " + initialSteps + " Final step count: " + finalSteps;
                 writer.write(locationInfo);
+                System.out.println(locationInfo);
 
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            // acceleration data recording
+//            try {
+//                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "t.txt");
+//
+//                FileWriter writer = new FileWriter(file, true);
+//
+//                for (int i = 0; i < g.size(); i++) {
+//                    String locationInfo = g.get(i) + ",     " + t.get(i) + "\n";
+//                    writer.write(locationInfo);
+//                }
+//                //String locationInfo =
+//
+//                //System.out.println(locationInfo);
+//
+//                writer.close();
+//                btn.setText("Now done");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
             isServiceRunning = false;
         }
     }
@@ -613,7 +634,7 @@ public class MainActivity extends AppCompatActivity {
             postData2.put("gForce", avgGF);
             postData2.put("bar", avgBar);
 
-
+//            JSONObject postData = new JSONObject();
 //            postData.put("avgSpeed", testSpeed.get(testSenC));
 //            postData.put("standardD", testStandardD.get(testSenC));
 //            postData.put("avgX", testX.get(testSenC));
@@ -629,11 +650,20 @@ public class MainActivity extends AppCompatActivity {
 //            postData.put("lat2", testLat2.get(testSenC));
 //            postData.put("long2", testLong2.get(testSenC));
 //            postData.put("time", formattedTime);
+//
+//            JSONObject postData2 = new JSONObject();
+//            postData2.put("speed", testSpeed.get(testSenC));
+//            postData2.put("standardD", testStandardD.get(testSenC));
+//            postData2.put("avgX", testX.get(testSenC));
+//            postData2.put("avgY", testY.get(testSenC));
+//            postData2.put("avgZ", testZ.get(testSenC));
+//            postData2.put("gForce", testGForce.get(testSenC));
+//            postData2.put("bar", testBar.get(testSenC));
 
             TextView tvResponse = findViewById(R.id.tvResponse);
             TextView tvPrediction = findViewById(R.id.tvPrediction);
 
-            api.postNewRecord(requestQueue, postData, tvResponse, logID);
+            //api.postNewRecord(requestQueue, postData, tvResponse, logID);
 
             PredictionCallback callback = result -> {
                 prediction = result;
@@ -665,8 +695,22 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+            // for testing
+
+//            String locationInfo = String.format("%s,%f,%f,%f,%f,%f,%f,%f,%s,%s,%s,%f,%f,%s,%f,%f,%s\n", testID.get(testSenC),
+//                    testSpeed.get(testSenC), testStandardD.get(testSenC), testX.get(testSenC), testY.get(testSenC),
+//                    testZ.get(testSenC), testGForce.get(testSenC), testBar.get(testSenC), edtTxtTransport.getText(), activityType, transitionType,
+//                    testLat1.get(testSenC), testLong1.get(testSenC), formattedTime, testLat2.get(testSenC), testLong2.get(testSenC), prediction);
+//            System.out.println(locationInfo);
+//            tvResponse.setText(testID.get(testSenC));
+
             lat2.clear();
             long2.clear();
+
+//            if (Integer.parseInt(testID.get(testSenC)) == Integer.parseInt(testID.get(testID.size() - 1))) {
+//                Button btn = findViewById(R.id.btnStartServices);
+//                btn.performClick();
+//            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -681,6 +725,9 @@ public class MainActivity extends AppCompatActivity {
 //        SensorAdapter adapter = new SensorAdapter(this, sensorList);
 //        recyclerView.setAdapter(adapter);
 //    }
+
+    private ArrayList<Float> g = new ArrayList<>();
+    private ArrayList<String> t = new ArrayList<>();
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -705,21 +752,24 @@ public class MainActivity extends AppCompatActivity {
                 lat2.add(latV);
                 long2.add(longV);
 
+                // for testing
+
 //                if (firstLat) {
 //                    testLocC ++;
 //                    lat = testLat1.get(testLocC);
 //                    lonG = testLong1.get(testLocC);
 //                    firstLat = false;
-//                    secondLat = true;
-//                }
-//
-//                if (secondLat) {
+//                    //secondLat = true;
+//                } else {
 //                    second ++;
 //                    lat = testLat2.get(second);
 //                    lonG = testLong2.get(second);
 //                    firstLat = true;
-//                    secondLat = false;
 //                }
+
+
+
+                // end of testing
 
                 TextView tvSStatus = findViewById(R.id.tvSStatus);
                 TextView tvDuration = findViewById(R.id.tvDuration);
@@ -729,7 +779,7 @@ public class MainActivity extends AppCompatActivity {
 
                 start = value > 0;
                 tvSStatus.setText("Near Bus stop: " + String.valueOf(start));
-                System.out.println("Start value is: " + start);
+                //System.out.println("Start value is: " + start);
                 if (start) {
                     //System.out.println("Calling if start is true: current value of sttartMilliSeconds: " + startTimeMillis);
                     startTimeMillis = System.currentTimeMillis();
@@ -764,6 +814,33 @@ public class MainActivity extends AppCompatActivity {
                     durationMillis = System.currentTimeMillis();
                 }
 
+                BusRouteCallback callback2 = result -> {
+                    busRoutes = result;
+                    for (String s: busRoutes) {
+                        System.out.println(s + " from callback2");
+                    }
+                    if (busRoutes.size() == 0) {
+                        System.out.println("EMPTY bus routes");
+                    }
+                    runOnUiThread(() -> {
+                    });
+                };
+
+                BusRouteCallback callback3 = result -> {
+                    busesForRoutes = result;
+                    for (String s: busesForRoutes) {
+                        System.out.println(s);
+                    }
+                    if (busesForRoutes.size() == 0) {
+                        System.out.println("EMPTY bus routes");
+                    }
+                    runOnUiThread(() -> {
+                    });
+                };
+
+                api.OnBusRoute(requestQueue, 55.939440, -3.104773, 10, callback2);
+                api.GetBusses(requestQueue, "502532562", callback3);
+
             }
 
             if (intent.getAction().equals(AccelerometerSensor.ACTION_ACCELERATION)) {
@@ -771,6 +848,11 @@ public class MainActivity extends AppCompatActivity {
                 float y = intent.getFloatExtra("y", 0);
                 float z = intent.getFloatExtra("z", 0);
                 float gF = intent.getFloatExtra("gForce", 0);
+                // for recording acceleration
+//                float gF = intent.getFloatExtra("gForce", 0);
+//                String tt = intent.getStringExtra("time");
+//                g.add(gF);
+//                t.add(tt);
                 TextView tvX = findViewById(R.id.tvX);
                 TextView tvY = findViewById(R.id.tvY);
                 TextView tvZ = findViewById(R.id.tvZ);
@@ -830,8 +912,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (intent.getAction().equals(MyForegroundService.ACTION_UPDATE_TEXT)) {
-//                String test = intent.getStringExtra("latitude");
-//                System.out.println(test);
+                String test = intent.getStringExtra("latitude");
+                //System.out.println(test);
                 UpdateDB();
 
             }
