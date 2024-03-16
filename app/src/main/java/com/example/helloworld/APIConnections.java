@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class APIConnections {
 
-    private String ngrok = "https://9db56daa2dcd.ngrok.app";
+    private String ngrok = "https://0aa59171ebaf.ngrok.app";
     public void getDistance(RequestQueue queue, double latitude, double longitude) {
         String url = ngrok + "/myapp/distance/";
 

@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
     public void onLoad(View view) {
         try {
             AssetManager assetManager = getAssets();
-            InputStream is = assetManager.open("car-19-02-23-2.txt");
+            InputStream is = assetManager.open("car-16-02-23-9.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -290,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
                 testTime.add(columns[13]);
                 testLat2.add(Double.valueOf(columns[14]));
                 testLong2.add(Double.valueOf(columns[15]));
-                testPrediction.add(columns[16]);
+                //testPrediction.add(columns[16]);
 
 //                for (String column : columns) {
 //                    System.out.print(column + ",");
@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onAPI(View view) {
-        EditText edtTxtFName = findViewById(R.id.edtRadius);
+        //EditText edtTxtFName = findViewById(R.id.edtRadius);
         TextView tvBus = findViewById(R.id.tvBus);
         tvBus.setMovementMethod(new ScrollingMovementMethod());
 
@@ -325,12 +325,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onAllBusStops(ArrayList<String> busses) {
-                    for (int i=0; i < busses.size(); i++) {
-                        System.out.println(busses.get(i) + " bus stop code");
-                    }
+                    tvBus.setText(busses.toString());
                 }
             };
-            api.getClosestBusStops(requestQueue, lat, lonG, Integer.parseInt(edtTxtFName.getText().toString()), tvBus, callback);
+            api.getClosestBusStops(requestQueue, lat, lonG, 17, tvBus, callback);
         } else {
             tvBus.setText("Turn on location");
         }
@@ -353,10 +351,10 @@ public class MainActivity extends AppCompatActivity {
         Button btn = findViewById(R.id.btnStartServices);
         //GetAllSensors();
         Intent locationIntent = new Intent(this, LocationService.class);
-        Intent acceleromterIntent = new Intent(this, AccelerometerSensor.class);
-        Intent barrometerIntent = new Intent(this, BarometerSensor.class);
-        Intent stepCounter = new Intent(this, StepCounter.class);
-        Intent orientation = new Intent(this, OrientationSensor.class);
+//        Intent acceleromterIntent = new Intent(this, AccelerometerSensor.class);
+//        Intent barrometerIntent = new Intent(this, BarometerSensor.class);
+//        Intent stepCounter = new Intent(this, StepCounter.class);
+//        Intent orientation = new Intent(this, OrientationSensor.class);
         Intent test = new Intent(this, MyForegroundService.class);
 
 
@@ -371,10 +369,10 @@ public class MainActivity extends AppCompatActivity {
         if (!isServiceRunning) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(locationIntent);
-                startForegroundService(acceleromterIntent);
-                startForegroundService(barrometerIntent);
-                startForegroundService(stepCounter);
-                startForegroundService(orientation);
+//                startForegroundService(acceleromterIntent);
+//                startForegroundService(barrometerIntent);
+//                startForegroundService(stepCounter);
+//                startForegroundService(orientation);
                 startForegroundService(test);
 
             }
@@ -396,10 +394,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Stop the location service
             stopService(locationIntent);
-            stopService(acceleromterIntent);
-            stopService(barrometerIntent);
-            stopService(stepCounter);
-            stopService(orientation);
+//            stopService(acceleromterIntent);
+//            stopService(barrometerIntent);
+//            stopService(stepCounter);
+//            stopService(orientation);
             stopService(test);
 
             tvLat.setText("Lat: ");
@@ -424,7 +422,7 @@ public class MainActivity extends AppCompatActivity {
 
                 FileWriter writer = new FileWriter(file, true);
 
-                String locationInfo = "Car count: " + carCount + " Bus count: " + busCount + " Near Bus stop count: " + busStopCount + " Inital step count: " + initialSteps + " Final step count: " + finalSteps + " Potential Busses: " + busesForRoutes.toString() + " BusRouteInt: " + busRouteInt + " NotBusRouteInt: " + notBusRouteInt;
+                String locationInfo = "Car count: " + carCount + " Bus count: " + busCount + " Near Bus stop count: " + busStopCount + " Inital step count: " + initialSteps + " Final step count: " + finalSteps + " Potential Busses: " + busesForRoutes.toString() + " BusRouteInt: " + busRouteInt + " NotBusRouteInt: " + notBusRouteInt + " Vehicle Type: " + vehicleType.toString();
                 writer.write(locationInfo);
                 System.out.println(locationInfo);
 
@@ -682,13 +680,13 @@ public class MainActivity extends AppCompatActivity {
                 });
             };
 
-            api.GetPredictions(requestQueue, postData2, tvPrediction, callback);
-
-            if (Objects.equals(prediction, "car")) {
-                carCount ++;
-            } else if (Objects.equals(prediction, "bus")) {
-                busCount ++;
-            }
+//            api.GetPredictions(requestQueue, postData2, tvPrediction, callback);
+//
+//            if (Objects.equals(prediction, "car")) {
+//                carCount ++;
+//            } else if (Objects.equals(prediction, "bus")) {
+//                busCount ++;
+//            }
 
 //            try {
 //                logID ++;
@@ -707,15 +705,17 @@ public class MainActivity extends AppCompatActivity {
 
             // for testing
 
-//            String locationInfo = String.format("%s,%f,%f,%f,%f,%f,%f,%f,%s,%s,%s,%f,%f,%s,%f,%f,%s\n", testID.get(testSenC),
-//                    testSpeed.get(testSenC), testStandardD.get(testSenC), testX.get(testSenC), testY.get(testSenC),
-//                    testZ.get(testSenC), testGForce.get(testSenC), testBar.get(testSenC), edtTxtTransport.getText(), activityType, transitionType,
-//                    testLat1.get(testSenC), testLong1.get(testSenC), formattedTime, testLat2.get(testSenC), testLong2.get(testSenC), prediction);
-//            System.out.println(locationInfo);
-//            tvResponse.setText(testID.get(testSenC));
+            String locationInfo = String.format("%s,%f,%f,%f,%f,%f,%f,%f,%s,%s,%s,%f,%f,%s,%f,%f,%s\n", testID.get(testSenC),
+                    testSpeed.get(testSenC), testStandardD.get(testSenC), testX.get(testSenC), testY.get(testSenC),
+                    testZ.get(testSenC), testGForce.get(testSenC), testBar.get(testSenC), edtTxtTransport.getText(), activityType, transitionType,
+                    testLat1.get(testSenC), testLong1.get(testSenC), formattedTime, testLat2.get(testSenC), testLong2.get(testSenC), prediction);
+            System.out.println(locationInfo);
+            tvResponse.setText(testID.get(testSenC));
 
             lat2.clear();
             long2.clear();
+
+            logID ++;
 
             if (Integer.parseInt(testID.get(testSenC)) == Integer.parseInt(testID.get(testID.size() - 1))) {
                 Button btn = findViewById(R.id.btnStartServices);
@@ -726,6 +726,29 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private void UpdateDB2() {
+        try {
+            logID ++;
+
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "trip.txt");
+
+            FileWriter writer = new FileWriter(file, true);
+
+            if (lat2.size() > 0) {
+                String locationInfo = String.format("%d,%s,%s,%f,%f,%f,%f\n", logID, activityType, transitionType, lat2.get(0), long2.get(0), lat2.get(1), long2.get(1));
+                writer.write(locationInfo);
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        lat2.clear();
+        long2.clear();
+
+    }
+
 
 //    private void GetAllSensors() {
 //        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -738,9 +761,61 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Float> g = new ArrayList<>();
     private ArrayList<String> t = new ArrayList<>();
+    private ArrayList<String> vehicleType = new ArrayList<>();
     private String busStopCode;
     private int busRouteInt;
     private int notBusRouteInt;
+    private int busScore = 0;
+    private int carScore = 0;
+    private String vType;
+    private int startID = 0;
+    private boolean vehicleBool = true;
+
+    private String checkVehicleType(int busStopCount, int onBusRouteInt, int notOnBusRouteInt) {
+        // Weights for being at a bus stop / not being on a bus route (only cars are not on bus routes hence higher weight)
+        int busStopWeight = 50;
+        int notOnBusRouteWeight = 100;
+
+        busScore = busStopCount * busStopWeight;
+        carScore = notOnBusRouteInt * notOnBusRouteWeight;
+
+        busScore += onBusRouteInt;
+
+        if (busStopCount == 0) {
+            startID ++;
+            if (startID < 10) {
+                System.out.println("startID < 10, prediction:   Undefined");
+                return "Undefined";
+            }
+            System.out.println("BusStop count is 0, prediction:   Car");
+            return "Car";
+        }
+
+        int bus = 0;
+        int car = 0;
+        for (String type : vehicleType) {
+            if ("Bus".equals(type)) {
+                bus++;
+            } else if ("Car".equals(type)) {
+                car++;
+            }
+        }
+
+        if (busStopCount < 2) {
+            if (car > 35) {
+                System.out.println("BusStop count is < 2, prediction:   Car");
+                return "Car";
+            }
+        }
+
+        if (busScore > carScore) {
+            System.out.println("Current vehicle prediction:   Bus");
+            return "Bus";
+        } else {
+            System.out.println("Current vehicle prediction:   Car");
+            return "Car";
+        }
+    }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -789,8 +864,13 @@ public class MainActivity extends AppCompatActivity {
                 TextView tvSStatus = findViewById(R.id.tvSStatus);
                 TextView tvDuration = findViewById(R.id.tvDuration);
                 TextView tvBusStopCount = findViewById(R.id.tvBusStopC);
-                EditText edtRadius = findViewById(R.id.edtRadius);
-                EditText edtD = findViewById(R.id.edtDuration);
+                TextView tvBus = findViewById(R.id.tvBus);
+                TextView tvBusRouteInt = findViewById(R.id.tvBusRouteInt);
+                TextView tvNotBusRouteInt = findViewById(R.id.tvNotBusRouteInt);
+                TextView tvCurrentVehicle = findViewById(R.id.tvCurrentVehicle);
+                tvBus.setMovementMethod(new ScrollingMovementMethod());
+                //EditText edtRadius = findViewById(R.id.edtRadius);
+                //EditText edtD = findViewById(R.id.edtDuration);
 
                 start = value > 0;
                 tvSStatus.setText("Near Bus stop: " + String.valueOf(start));
@@ -819,7 +899,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 };
 
-                api.getClosestStops(requestQueue, lat, lonG, Integer.parseInt(edtRadius.getText().toString()), callback);
+                api.getClosestStops(requestQueue, lat, lonG, 17, callback);
 
                 if (!start) {
                     durationMillis = durationMillis - startTimeMillis;
@@ -827,7 +907,7 @@ public class MainActivity extends AppCompatActivity {
                     //System.out.println("Duration while 'start' was true: " + durationMillis + " seconds");
                     tvDuration.setText("Duration: " + String.valueOf(durationMillis));
 
-                    if (durationMillis >= Integer.parseInt(edtD.getText().toString()) && durationMillis < 500) {
+                    if (durationMillis >= 20 && durationMillis < 500) {
                         busStopCount ++;
                         tvBusStopCount.setText("Bus stop count: " + String.valueOf(busStopCount));
                     }
@@ -844,10 +924,21 @@ public class MainActivity extends AppCompatActivity {
                     if (busRoutes.size() == 0) {
                         notBusRouteInt ++;
                         System.out.println(notBusRouteInt + " not bus route int");
+                        tvNotBusRouteInt.setText("NotBusRouteInt: " + String.valueOf(notBusRouteInt));
                         //System.out.println("EMPTY bus routes");
                     } else {
                         busRouteInt ++;
                         System.out.println(busRouteInt + " bus route int");
+                        tvBusRouteInt.setText("BusRouteInt: " + String.valueOf(busRouteInt));
+                        List<String> filteredNewBuses = result.stream()
+                                .filter(busesForRoutes::contains)
+                                .collect(Collectors.toList());
+                        System.out.println("filtered array called from callback 2 " + filteredNewBuses.toString());
+                        if (!filteredNewBuses.isEmpty()) {
+                            busesForRoutes.retainAll(filteredNewBuses);
+                        }
+                        System.out.println("new bus routes called from callback 2 " + busesForRoutes.toString());
+                        tvBus.setText(busesForRoutes.toString());
                     }
                     runOnUiThread(() -> {
                     });
@@ -866,6 +957,7 @@ public class MainActivity extends AppCompatActivity {
                             busesForRoutes.retainAll(filteredNewBuses);
                         }
                         System.out.println("new bus routes called " + busesForRoutes.toString());
+                        tvBus.setText(busesForRoutes.toString());
                     }
                     for (String s: busesForRoutes) {
                         System.out.println(s);
@@ -880,6 +972,9 @@ public class MainActivity extends AppCompatActivity {
                 api.OnBusRoute(requestQueue, lat, lonG, 10, callback2);
                 api.GetBusses(requestQueue, busStopCode, callback3);
 
+                vType = checkVehicleType(busStopCount, busRouteInt, notBusRouteInt);
+                vehicleType.add(vType);
+                tvCurrentVehicle.setText("CurrentVehicle: " + vType);
             }
 
             if (intent.getAction().equals(AccelerometerSensor.ACTION_ACCELERATION)) {
@@ -954,6 +1049,7 @@ public class MainActivity extends AppCompatActivity {
                 String test = intent.getStringExtra("latitude");
                 //System.out.println(test);
                 UpdateDB();
+                //UpdateDB2();
 
             }
 
