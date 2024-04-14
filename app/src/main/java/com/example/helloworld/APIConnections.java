@@ -20,7 +20,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class APIConnections {
 
-    private String ngrok = "https://0aa59171ebaf.ngrok.app";
+    // NGROK base url to be appended to the start
+    private String ngrok = "https://37fe7fd5bbd1.ngrok.app";
+    // Get the distance between two objects
     public void getDistance(RequestQueue queue, double latitude, double longitude) {
         String url = ngrok + "/myapp/distance/";
 
@@ -48,6 +50,7 @@ public class APIConnections {
         queue.add(jsonObjectRequest);
     }
 
+    // Get the closest bus stops to the user (for button)
     public void getClosestBusStops(RequestQueue queue, double latitude, double longitude, int radius, TextView tv, BusStopCallback callback) {
         String url = ngrok + "/myapp/transport/";
         StringBuilder sb = new StringBuilder();
@@ -65,11 +68,13 @@ public class APIConnections {
                         JSONArray results = response.getJSONArray("results");
                         ArrayList<String> busStops = new ArrayList<>();
                         //System.out.println("length" + results.length());
+                        // Get all the results from the response and print to main app
                         for (int i = 0; i < results.length(); i++) {
                             JSONObject busStopObject = results.getJSONObject(i);
                             busStops.add(String.valueOf(busStopObject.optInt("osm_id")));
                             int gid = busStopObject.optInt("osm_id");
                             String name = busStopObject.optString("name");
+                            // OSM id for unique identifier and name is the bus stop code
                             sb.append("OSM_ID: ").append(gid).append(", Name: ").append(name).append("\n");
                         }
                         tv.setText(sb.toString());
@@ -86,6 +91,7 @@ public class APIConnections {
         queue.add(request);
     }
 
+    // Get the closest bus stops to the user (for API call)
     public void getClosestStops(RequestQueue queue, double latitude, double longitude, int radius, BusStopCallback callback) {
         String url = ngrok + "/myapp/transport/";
         JSONObject postData = new JSONObject();
@@ -122,6 +128,7 @@ public class APIConnections {
         queue.add(request);
     }
 
+    // Check if on a bus route
     public void OnBusRoute(RequestQueue queue, double latitude, double longitude, int radius, BusRouteCallback callback) {
         String url = ngrok + "/myapp/busRoute/";
         JSONObject postData = new JSONObject();
@@ -141,6 +148,7 @@ public class APIConnections {
                             JSONObject jsonObject = results.getJSONObject(i);
                             busRoutes.add(jsonObject.getString("name"));
                         }
+                        // Call back used to retrieve the results
                         callback.onResult(busRoutes);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -155,6 +163,7 @@ public class APIConnections {
         queue.add(request);
     }
 
+    // Get the buses that go to a particular bus stop
     public void GetBusses(RequestQueue queue, String stopCode, BusRouteCallback callback) {
         String url = ngrok + "/myapp/busData/";
         JSONObject postData = new JSONObject();
@@ -172,6 +181,7 @@ public class APIConnections {
                         for (int i = 0; i < busNumbersArray.length(); i++) {
                             busNumbers.add(busNumbersArray.getString(i));
                         }
+                        // Callback used to retrieve the results
                         callback.onResult(busNumbers);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -185,6 +195,7 @@ public class APIConnections {
         queue.add(request);
     }
 
+    // Post a new record to the PG database
     public void postNewRecord(RequestQueue queue, JSONObject postData, TextView tv, Integer ID) {
         String url = ngrok + "/myapp/";
 
@@ -200,6 +211,7 @@ public class APIConnections {
         queue.add(request);
     }
 
+    // Deprecated predictions using the old ML algorithm
     public void GetPredictions(RequestQueue queue, JSONObject postData, TextView tv, PredictionCallback callback) {
         String url = ngrok + "/myapp/predict/";
 

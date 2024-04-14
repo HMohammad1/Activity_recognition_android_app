@@ -91,15 +91,17 @@ public class StepCounter extends Service implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+
             if (initialStepCount == -1) {
                 initialStepCount = event.values[0];
             }
-
+            // Only record steps taken in this session, not the total steps taken when the phone has been on
             sessionSteps = event.values[0] - initialStepCount;
 
             Intent intent = new Intent(ACTION_STEP_COUNT);
             intent.putExtra("steps", sessionSteps);
             sendBroadcast(intent);
+            // Write the data to internal file so the button to update steps can use it
             writeFile((int) sessionSteps);
             Log.d("StepCounterService", "Session Steps: " + sessionSteps);
         }
@@ -108,18 +110,19 @@ public class StepCounter extends Service implements SensorEventListener {
     public void writeFile(int fileContents) {
         DataOutputStream dos = null;
         try {
+            // Saved to apps internal storage
             File file = new File(getFilesDir(), "steps.txt");
             dos = new DataOutputStream(new FileOutputStream(file));
             dos.writeInt(fileContents);
-            Log.d("YourTag", "Successfully wrote steps to file: " + fileContents);
+            Log.d("Steps", "Successfully wrote steps to file: " + fileContents);
         } catch (IOException e) {
-            Log.e("YourTag", "File write failed: ", e);
+            Log.e("Steps", "File write failed: ", e);
         } finally {
             if (dos != null) {
                 try {
                     dos.close();
                 } catch (IOException e) {
-                    Log.e("YourTag", "Error closing file: ", e);
+                    Log.e("Steps", "Error closing file: ", e);
                 }
             }
         }

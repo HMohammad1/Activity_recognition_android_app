@@ -23,6 +23,7 @@ public class BarometerSensor extends Service implements SensorEventListener {
     @Override
     public void onCreate() {
         super.onCreate();
+        // Retrieving the sensor to be used and setting the delay
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         Sensor barometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
         sensorManager.registerListener(this, barometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -55,7 +56,7 @@ public class BarometerSensor extends Service implements SensorEventListener {
         return new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Barometer Service")
                 .setContentText("Collecting barometer data in background")
-                .setSmallIcon(R.drawable.ic_launcher_foreground) // Replace with your icon
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .build();
     }
@@ -71,6 +72,7 @@ public class BarometerSensor extends Service implements SensorEventListener {
         return null;
     }
 
+    // Gets the values for the pressure everytime a new result has come in
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_PRESSURE) {

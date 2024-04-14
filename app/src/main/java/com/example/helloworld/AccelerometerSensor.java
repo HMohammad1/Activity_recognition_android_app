@@ -33,9 +33,12 @@ public class AccelerometerSensor extends Service implements SensorEventListener 
     @Override
     public void onCreate() {
         super.onCreate();
+        // Get the sensors available to the device
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        // Pick the accelerometer sensor
         Sensor accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_FASTEST);
+        // Set the delay of the sensor (how fast it should work)
+        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -45,6 +48,7 @@ public class AccelerometerSensor extends Service implements SensorEventListener 
         return START_NOT_STICKY;
     }
 
+    // Create the notification
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
@@ -81,7 +85,6 @@ public class AccelerometerSensor extends Service implements SensorEventListener 
         return null;
     }
 
-    //private ArrayList<Float> g = new ArrayList<>();
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -91,12 +94,11 @@ public class AccelerometerSensor extends Service implements SensorEventListener 
 
             // acceleration magnitude
             float m = (float) Math.sqrt(x * x + y * y + z * z);
-            //g.add(m);
             // Convert to g-force
             float gForce = m / 9.81f;
 
-            //WriteFile(x, y, z, gForce, m);
 
+            // Send over details
             LocalTime now = LocalTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
             String formattedTime = now.format(formatter);
@@ -106,32 +108,11 @@ public class AccelerometerSensor extends Service implements SensorEventListener 
             intent.putExtra("y", y);
             intent.putExtra("z", z);
             intent.putExtra("gForce", m);
-            //intent.putExtra("time", formattedTime);
+            intent.putExtra("time", formattedTime);
             sendBroadcast(intent);
         }
     }
 
-    private void WriteFile(float x, float y, float z, float gForce, float m) {
-        try {
-
-            LocalTime now = LocalTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-            String formattedTime = now.format(formatter);
-
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "acceleration.txt");
-
-            FileWriter writer = new FileWriter(file, true);
-
-            //String locationInfo = x + "," + y + "," + z + "," + gForce + "," + m + "," + formattedTime + "\n";
-            String locationInfo = gForce + ",       " + m + ",      " + formattedTime + "\n";
-            writer.write(locationInfo);
-            //System.out.println(locationInfo);
-
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {

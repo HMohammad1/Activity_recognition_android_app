@@ -34,22 +34,22 @@ import java.io.IOException;
 public class LocationService extends Service {
 
     public static final String BROADCAST_LOCATION_ACTION = "LocationAction";
-    public APIConnections api = new APIConnections();
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // Make sure location permissions are granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-            LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000) // Set interval and fastest interval
+            // Parameters for the location request such as accuracy and interval
+            LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
                     .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
                     .build();
-
+            // Call the location callback to retrieve results
             LocationServices.getFusedLocationProviderClient(this)
                     .requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
         } else {
             Log.d("LocationService", "Location permission not granted");
         }
-
+        // Starts the foreground service and makes the notification
         startForeground(1, getNotification());
         return START_STICKY;
     }
@@ -73,18 +73,17 @@ public class LocationService extends Service {
                 .build();
     }
 
+    // Int used as an ID to make sure location is updating
     int g = 0;
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             if (locationResult != null) {
+                // Get the latest location
                 Location location = locationResult.getLastLocation();
-                Log.d("LocationService", "Location update: " + location + " " + g);
                 g++;
-                RequestQueue queue = Volley.newRequestQueue(LocationService.this);
                 assert location != null;
-                //api.getDistance(queue, location.getLatitude(), location.getLongitude());
-
+                // Send location data to the main activity
                 Intent intent = new Intent(BROADCAST_LOCATION_ACTION);
                 intent.putExtra("latitude", location.getLatitude());
                 intent.putExtra("longitude", location.getLongitude());

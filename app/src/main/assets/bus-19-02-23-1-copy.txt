@@ -1,5 +1,10 @@
 1,0.761334,1.076689,8.263770,-2.721027,0.213244,1.051708,1013.194092,bus,WALKING,ENTER,55.949017,-3.186929,16:00:28,55.948930,-3.186927,null
 2,2.437026,0.217216,5.944777,0.251914,2.535564,1.076904,1013.034241,bus,WALKING,ENTER,55.948907,-3.186941,16:00:38,55.948987,-3.186892,bus
+2,2.437026,0.217216,5.944777,0.251914,2.535564,1.076904,1013.034241,bus,WALKING,ENTER,55.948907,-3.186941,16:00:38,55.948987,-3.186892,bus
+2,2.437026,0.217216,5.944777,0.251914,2.535564,1.076904,1013.034241,bus,WALKING,ENTER,55.948907,-3.186941,16:00:38,55.948987,-3.186892,bus
+2,2.437026,0.217216,5.944777,0.251914,2.535564,1.076904,1013.034241,bus,WALKING,ENTER,55.948907,-3.186941,16:00:38,55.948987,-3.186892,bus
+2,2.437026,0.217216,5.944777,0.251914,2.535564,1.076904,1013.034241,bus,WALKING,ENTER,55.948907,-3.186941,16:00:38,55.948987,-3.186892,bus
+2,2.437026,0.217216,5.944777,0.251914,2.535564,1.076904,1013.034241,bus,WALKING,ENTER,55.948907,-3.186941,16:00:38,55.948987,-3.186892,bus
 3,11.883347,0.194509,5.573776,0.845566,3.512859,1.015344,1013.058594,bus,WALKING,ENTER,55.948530,-3.186717,16:00:48,55.948217,-3.186513,bus
 4,16.874027,2.595748,5.983978,0.955164,3.908864,1.006741,1012.796814,bus,WALKING,ENTER,55.947991,-3.186285,16:00:58,55.947630,-3.186147,bus
 5,19.369865,0.557246,6.272400,0.914269,4.192698,1.003825,1012.392090,bus,VEHICLE,ENTER,55.947235,-3.185949,16:01:08,55.946860,-3.185772,bus
@@ -92,18 +97,3 @@
 92,20.025177,0.043741,3.311598,2.109116,7.328422,1.031391,1017.007507,bus,VEHICLE,ENTER,55.931905,-3.148067,16:15:58,55.931904,-3.147367,bus
 93,17.446754,1.874302,3.325479,2.069732,7.296125,1.016795,1016.650696,bus,VEHICLE,ENTER,55.931915,-3.146664,16:16:08,55.931914,-3.145956,bus
 94,10.173063,6.960045,3.355633,2.006417,7.242366,1.019589,1016.841858,bus,VEHICLE,ENTER,55.931982,-3.145341,16:16:18,55.932058,-3.144929,bus
-Car count: 0 Bus count: 93 Near Bus stop count: 12 Inital step count: 0.0 Final step count: 64.0
-14 From South bridge - Home 
-1. Car count: 0 Bus count: 92 Near Bus stop count: 8 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [14] BusRouteInt: 186 NotBusRouteInt: 0
-2. Car count: 0 Bus count: 93 Near Bus stop count: 7 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [14] BusRouteInt: 186 NotBusRouteInt: 0 Vehicle Type: [Car, Car, Car, Car, Car, Car, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus]
-
-
-bus-19-02-23-2-1: 1 - 35: BUS 3
-
-1. Car count: 0 Bus count: 0 Near Bus stop count: 3 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [14] BusRouteInt: 68 NotBusRouteInt: 0 Vehicle Type: [Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus]
-
-
-bus-19-02-23-2-1: 33 - 94: BUS 4
-
-1. Car count: 0 Bus count: 0 Near Bus stop count: 5 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [14] BusRouteInt: 122 NotBusRouteInt: 0 Vehicle Type: [Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus]
-

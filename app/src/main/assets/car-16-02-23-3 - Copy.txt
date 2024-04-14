@@ -58,3 +58,10 @@ Baronscourt Terrace - Duddingston Road W
 Home testing:
 
 1. Car count: 52 Bus count: 0 Near Bus stop count: 0 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [] BusRouteInt: 95 NotBusRouteInt: 11
+
+Final Testing:
+
+Car 7
+
+Car count: 0 Bus count: 0 Near Bus stop count: 0 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [] BusRouteInt: 95 NotBusRouteInt: 11 Vehicle Type: [Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car]
+

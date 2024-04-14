@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.hardware.Sensor;
 import java.util.List;
-
+// Gets a list of all the sensors a mobile phone has
 public class SensorAdapter extends RecyclerView.Adapter<SensorAdapter.ViewHolder> {
 
     private List<Sensor> sensors;

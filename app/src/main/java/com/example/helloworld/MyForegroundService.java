@@ -29,7 +29,6 @@ public class MyForegroundService extends Service {
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
         Notification notification = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             notification = new Notification.Builder(this, CHANNEL_ID)
@@ -39,11 +38,8 @@ public class MyForegroundService extends Service {
                     .setContentIntent(pendingIntent)
                     .build();
         }
-
         startForeground(1, notification);
-
         performBackgroundTask();
-
         return START_NOT_STICKY;
     }
 
@@ -52,15 +48,18 @@ public class MyForegroundService extends Service {
         return null;
     }
 
+    // Make a background thread that runs continuously every 10 seconds which is used for when data should be posted / written to file
     private void performBackgroundTask() {
         backgroundThread = new Thread(() -> {
             while (isRunning) {
 
+                // Sample intent so the broadcast receiver can perform its actions
                 Intent intent = new Intent(ACTION_UPDATE_TEXT);
                 intent.putExtra("sample", "sample");
                 sendBroadcast(intent);
 
                 try {
+                    // sleep for 10 s
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     isRunning = false;
@@ -87,7 +86,7 @@ public class MyForegroundService extends Service {
     public void onDestroy() {
         super.onDestroy();
         isRunning = false;
-        if (backgroundThread != null) backgroundThread.interrupt(); // Interrupt the thread if it's sleeping
+        if (backgroundThread != null) backgroundThread.interrupt(); // Interrupt the thread if it's sleeping so it can be destroyed
         stopForeground(true);
     }
 }

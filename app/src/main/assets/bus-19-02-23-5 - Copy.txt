@@ -118,11 +118,11 @@ Home testing:
 
 
 
-bus-19-02-23-5-1: 1 - 55
+bus-19-02-23-5-1: 1 - 55 BUS 9
 
 1. Car count: 0 Bus count: 0 Near Bus stop count: 8 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [5] BusRouteInt: 108 NotBusRouteInt: 0 Vehicle Type: [Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus]
 
 
-bus-19-02-23-5-2: 49 - 111
+bus-19-02-23-5-2: 49 - 111 BUS 10
 
 1. Car count: 0 Bus count: 0 Near Bus stop count: 5 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [5] BusRouteInt: 122 NotBusRouteInt: 0 Vehicle Type: [Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus]

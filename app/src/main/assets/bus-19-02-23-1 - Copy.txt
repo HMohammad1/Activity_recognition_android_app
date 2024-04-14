@@ -81,12 +81,17 @@ Liberton Road (cameron toll) (bus number 7) - South bridge
 4. Adding entries for person waiting at the bus stop:
 Car count: 0 Bus count: 0 Near Bus stop count: 7 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [7, 31, 37] BusRouteInt: 153 NotBusRouteInt: 3 Vehicle Type: [Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus]
 
-bus-19-02-23-1-2: 1 - 35:
+bus-19-02-23-1-1: 1 - 35: BUS 1
 
 1. Car count: 0 Bus count: 0 Near Bus stop count: 3 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [3, 7, 8, 29, 31, 37, 47, 47B, N31] BusRouteInt: 72 NotBusRouteInt: 1 Vehicle Type: [Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus]
 
+2. Car count: 0 Bus count: 0 Near Bus stop count: 3 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [3, 7, 8, 29, 31, 37, 47, 47B, N31] BusRouteInt: 72 NotBusRouteInt: 0 Vehicle Type: [Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus]
 
-bus-19-02-23-1-2: 27 - 75:
+3. Car count: 0 Bus count: 0 Near Bus stop count: 3 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [3, 7, 8, 29, 31, 37, 47, 47B, N31] BusRouteInt: 72 NotBusRouteInt: 0 Vehicle Type: [Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus]
+
+
+
+bus-19-02-23-1-2: 27 - 75: BUS 2
 
 1. Car count: 0 Bus count: 0 Near Bus stop count: 5 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [7, 31, 37] BusRouteInt: 93 NotBusRouteInt: 3 Vehicle Type: [Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Bus, Car, Car, Car, Car, Car, Car, Car, Car, Bus, Bus, Bus, Bus, Bus, Bus]
 

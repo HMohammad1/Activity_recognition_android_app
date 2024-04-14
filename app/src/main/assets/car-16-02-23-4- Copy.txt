@@ -86,3 +86,13 @@ Car count: 0 Bus count: 0 Near Bus stop count: 1 Inital step count: 0.0 Final st
 2. Records 15 - 80 - Hutchison Terrace - Balcarres St
 Car count: 0 Bus count: 0 Near Bus stop count: 1 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [] BusRouteInt: 121 NotBusRouteInt: 9 Vehicle Type: [Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car]
 
+Final Testing:
+
+Car 8
+
+Car count: 0 Bus count: 0 Near Bus stop count: 1 Inital step count: 0.0 Final step count: 0.0 Potential Busses: [] BusRouteInt: 121 NotBusRouteInt: 9 Vehicle Type: [Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car, Car]
+
+
+
+
+

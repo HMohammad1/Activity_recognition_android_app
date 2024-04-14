@@ -5,8 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.PendingIntent;
@@ -16,9 +14,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -44,7 +39,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,7 +46,6 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,14 +54,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
@@ -145,12 +134,13 @@ public class MainActivity extends AppCompatActivity {
     private float finalSteps = 0;
     private boolean initialStepsBool = true;
 
-
+    // Activity recognition API code gotten from :https://developer.android.com/codelabs/activity-recognition-transition#0
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Check permissions have been granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION_PERMISSION);
         } else {
@@ -162,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 6);
         }
 
+        // Get the phones orientation from the sensor
         orientationEventListener = new OrientationEventListener(this) {
             @Override
             public void onOrientationChanged(int orientation) {
@@ -170,10 +161,10 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        // Check if orientation can be received or not
         if (orientationEventListener.canDetectOrientation()) {
             orientationEventListener.enable();
         } else {
-
             orientationEventListener.disable();
         }
 
@@ -184,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
         // List of activity transitions to track.
         activityTransitionList = new ArrayList<>();
 
-        // TODO: Add activity transitions to track.
         activityTransitionList.add(new ActivityTransition.Builder()
                 .setActivityType(DetectedActivity.WALKING)
                 .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
@@ -222,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
         mActivityTransitionsPendingIntent =
                 PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_MUTABLE);
 
+        // Global queue for API calls using Volley
         requestQueue = Volley.newRequestQueue(this);
     }
 
@@ -250,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        // unregister all receivers
         unregisterReceiver(broadcastReceiver);
         super.onDestroy();
     }
@@ -257,21 +249,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // when app is back in the main view enable orientation sensor
         orientationEventListener.enable();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        // when app is in the background disable orientation sensor
         orientationEventListener.disable();
     }
 
+    // Used for testing on emulator. Needs to be pressed to load in the data to be spoofed before algorithm starts running
     public void onLoad(View view) {
         try {
+            // All files saved in the asset manager
             AssetManager assetManager = getAssets();
-            InputStream is = assetManager.open("car-16-02-23-9.txt");
+            // Replace the name with the journey to be ran (use the -copy ones)
+            InputStream is = assetManager.open("bus-19-02-23-1-copy.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line;
+            // Populate the data to be emulated
             while ((line = reader.readLine()) != null) {
                 String[] columns = line.split(",");
                 testID.add(columns[0]);
@@ -306,15 +304,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // refresh the steps if they haven't been updated
     public void onSteps(View view) {
         refreshStepCountDisplay();
     }
 
+    // Button to get the closest bus stops to the user
     public void onAPI(View view) {
         //EditText edtTxtFName = findViewById(R.id.edtRadius);
         TextView tvBus = findViewById(R.id.tvBus);
         tvBus.setMovementMethod(new ScrollingMovementMethod());
-
+        // make sure users location is on first
         if (lat != 0.0 && lonG != 0.0) {
             BusStopCallback callback = new BusStopCallback() {
                 @Override
@@ -334,7 +334,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Main button to start the algorithm
     public void onBtnClick(View view) {
+        // get all the text fields to update
         TextView tvLat = findViewById(R.id.tvLat);
         TextView tvLong = findViewById(R.id.tvLong);
         TextView accX = findViewById(R.id.tvX);
@@ -350,14 +352,16 @@ public class MainActivity extends AppCompatActivity {
         TextView tvResponse = findViewById(R.id.tvResponse);
         Button btn = findViewById(R.id.btnStartServices);
         //GetAllSensors();
+        // The intents to be used in the broadcast receiver
         Intent locationIntent = new Intent(this, LocationService.class);
-//        Intent acceleromterIntent = new Intent(this, AccelerometerSensor.class);
-//        Intent barrometerIntent = new Intent(this, BarometerSensor.class);
-//        Intent stepCounter = new Intent(this, StepCounter.class);
-//        Intent orientation = new Intent(this, OrientationSensor.class);
+        Intent acceleromterIntent = new Intent(this, AccelerometerSensor.class);
+        Intent barrometerIntent = new Intent(this, BarometerSensor.class);
+        Intent stepCounter = new Intent(this, StepCounter.class);
+        Intent orientation = new Intent(this, OrientationSensor.class);
         Intent test = new Intent(this, MyForegroundService.class);
 
-
+        // start / stop activity tracking when clicked
+        // also enable / disable the activity recognition API
         if(!activityTrackingEnabled) {
             activityTrackingEnabled = true;
             enableActivityTransitions();
@@ -366,16 +370,18 @@ public class MainActivity extends AppCompatActivity {
             disableActivityTransitions();
         }
 
+        // Once started, start all foreground services
         if (!isServiceRunning) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(locationIntent);
-//                startForegroundService(acceleromterIntent);
-//                startForegroundService(barrometerIntent);
-//                startForegroundService(stepCounter);
-//                startForegroundService(orientation);
+                startForegroundService(acceleromterIntent);
+                startForegroundService(barrometerIntent);
+                startForegroundService(stepCounter);
+                startForegroundService(orientation);
                 startForegroundService(test);
 
             }
+            // reset all fields when initially starting the app
             btn.setText("Running...");
             logID = 0;
             busStopCount = 0;
@@ -392,14 +398,15 @@ public class MainActivity extends AppCompatActivity {
             firstLat = true;
             secondLat = false;
         } else {
+            // stop all the serves when the algorithm is stopped
             // Stop the location service
             stopService(locationIntent);
-//            stopService(acceleromterIntent);
-//            stopService(barrometerIntent);
-//            stopService(stepCounter);
-//            stopService(orientation);
+            stopService(acceleromterIntent);
+            stopService(barrometerIntent);
+            stopService(stepCounter);
+            stopService(orientation);
             stopService(test);
-
+            // reset all the fields to be empty
             tvLat.setText("Lat: ");
             tvLong.setText("Long: ");
             accX.setText("accX: ");
@@ -411,10 +418,11 @@ public class MainActivity extends AppCompatActivity {
             tvSStatus.setText("Near bus stop: ");
             tvDuration.setText("Duration Stopped: ");
             tvBusStopCount.setText("Bus Stop Count: ");
-            tvPrediction.setText("Prediction:");
+            //tvPrediction.setText("Prediction:");
             tvResponse.setText("Response:");
             btn.setText("Not Running");
             System.out.println("Car count is: " + carCount);
+            // Log the final results to a file
             try {
                 logID ++;
 
@@ -430,6 +438,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            // Used for recording the magnitude data (deprecated)
             // acceleration data recording
 //            try {
 //                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "t.txt");
@@ -462,19 +471,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void enableActivityTransitions() {
+        // Enable activity tracking and sign up for specific activities
         ActivityTransitionRequest request = new ActivityTransitionRequest(activityTransitionList);
         Task<Void> task = ActivityRecognition.getClient(this)
                 .requestActivityTransitionUpdates(request, mActivityTransitionsPendingIntent);
         task.addOnSuccessListener(
-                new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void result) {
-                        activityTrackingEnabled = true;
-                        TextView tvActivity = findViewById(R.id.tvActivity);
-                        tvActivity.setMovementMethod(new ScrollingMovementMethod());
-                        tvActivity.setText("Transitions Api was successfully registered.");
+                result -> {
+                    activityTrackingEnabled = true;
+                    TextView tvActivity = findViewById(R.id.tvActivity);
+                    tvActivity.setMovementMethod(new ScrollingMovementMethod());
+                    tvActivity.setText("Transitions Api was successfully registered.");
 
-                    }
                 });
 
         task.addOnFailureListener(
@@ -490,6 +497,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    // Disables activity recognition API
     private void disableActivityTransitions() {
         ActivityRecognition.getClient(this).removeActivityTransitionUpdates(mActivityTransitionsPendingIntent)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -509,6 +517,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    // Helper method for activity recognition API
     private static String toActivityString(int activity) {
         switch (activity) {
             case DetectedActivity.STILL:
@@ -522,6 +531,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Helper method for activity recognition API
     private static String toTransitionType(int transitionType) {
         switch (transitionType) {
             case ActivityTransition.ACTIVITY_TRANSITION_ENTER:
@@ -533,7 +543,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Update the DB by posting a record
     private void UpdateDB() {
+        // average all the sensor data
+
         // Speed component
         int sC = speed.size();
         float avgS = 0;
@@ -613,7 +626,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         try {
+            // Counter use for testing, uncomment when using the actual app
             testSenC ++;
+
+            // Un comment when using the actual to post data
 
 //            JSONObject postData = new JSONObject();
 //            postData.put("avgSpeed", avgS);
@@ -641,6 +657,10 @@ public class MainActivity extends AppCompatActivity {
 //            postData2.put("avgZ", avgZ);
 //            postData2.put("gForce", avgGF);
 //            postData2.put("bar", avgBar);
+
+            // end of uncomment
+
+            // posting data using the emulated data
 
             JSONObject postData = new JSONObject();
             postData.put("avgSpeed", testSpeed.get(testSenC));
@@ -671,8 +691,10 @@ public class MainActivity extends AppCompatActivity {
             TextView tvResponse = findViewById(R.id.tvResponse);
             TextView tvPrediction = findViewById(R.id.tvPrediction);
 
+            // API call to post a record
             //api.postNewRecord(requestQueue, postData, tvResponse, logID);
 
+            // callback to get prediction result for deprecated API call
             PredictionCallback callback = result -> {
                 prediction = result;
 
@@ -680,13 +702,17 @@ public class MainActivity extends AppCompatActivity {
                 });
             };
 
-//            api.GetPredictions(requestQueue, postData2, tvPrediction, callback);
-//
-//            if (Objects.equals(prediction, "car")) {
-//                carCount ++;
-//            } else if (Objects.equals(prediction, "bus")) {
-//                busCount ++;
-//            }
+            // deprecated API call for old predictions
+            //api.GetPredictions(requestQueue, postData2, tvPrediction, callback);
+
+            // count the number of times bus or car is predicted, deprecated
+            if (Objects.equals(prediction, "car")) {
+                carCount ++;
+            } else if (Objects.equals(prediction, "bus")) {
+                busCount ++;
+            }
+
+            // write the data to a file, uncomment when not testing
 
 //            try {
 //                logID ++;
@@ -703,6 +729,9 @@ public class MainActivity extends AppCompatActivity {
 //                e.printStackTrace();
 //            }
 
+            // end of uncomment
+
+            // writing data to the console for testing data
             // for testing
 
             String locationInfo = String.format("%s,%f,%f,%f,%f,%f,%f,%f,%s,%s,%s,%f,%f,%s,%f,%f,%s\n", testID.get(testSenC),
@@ -717,16 +746,20 @@ public class MainActivity extends AppCompatActivity {
 
             logID ++;
 
+            // automatically stop the algorithm when at the end of the journey
             if (Integer.parseInt(testID.get(testSenC)) == Integer.parseInt(testID.get(testID.size() - 1))) {
                 Button btn = findViewById(R.id.btnStartServices);
                 btn.performClick();
             }
+
+            // end of testing
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    // Used for testing on the emulator, depicted
     private void UpdateDB2() {
         try {
             logID ++;
@@ -749,6 +782,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // USed to record the magnitude values and write it to a file
+    private void UpdateDB3() {
+        try {
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "t.txt");
+            FileWriter writer = new FileWriter(file, true);
+            // Amount of data to slice once values are written to the txt file
+            int x = accSensorValue.size();
+            int y = accTime.size();
+            for (int i = 0; i < x; i++) {
+                String locationInfo = accSensorValue.get(i) + ",     " + accTime.get(i) + "\n";
+                writer.write(locationInfo);
+            }
+            // Clear the list with the values that have been written
+            accSensorValue.subList(0, x).clear();
+            accTime.subList(0, y).clear();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    // Gets a list of all the sensors
 
 //    private void GetAllSensors() {
 //        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -759,8 +815,9 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.setAdapter(adapter);
 //    }
 
-    private ArrayList<Float> g = new ArrayList<>();
-    private ArrayList<String> t = new ArrayList<>();
+    // variables used for the APIs
+    private ArrayList<Float> accSensorValue = new ArrayList<>();
+    private ArrayList<String> accTime = new ArrayList<>();
     private ArrayList<String> vehicleType = new ArrayList<>();
     private String busStopCode;
     private int busRouteInt;
@@ -782,17 +839,26 @@ public class MainActivity extends AppCompatActivity {
         busScore += onBusRouteInt;
 
         if (busStopCount == 0) {
+            // ID to keep track of how many times this is called (every 5 seconds)
             startID ++;
+            // If the length is less than 10 (45s) then leave as undefined
             if (startID < 10) {
                 System.out.println("startID < 10, prediction:   Undefined");
                 return "Undefined";
             }
+            // If the user is still at a bus stop and has not left we can assume they are on a bus
+            // since they haven't left a bus stop yet.
+            if (startID < 40 && start) {
+                return "Bus";
+            }
+            // Otherwise assume they are in a car
             System.out.println("BusStop count is 0, prediction:   Car");
             return "Car";
         }
 
         int bus = 0;
         int car = 0;
+        // Count the number of times the algorithm detects busses / cars
         for (String type : vehicleType) {
             if ("Bus".equals(type)) {
                 bus++;
@@ -800,14 +866,16 @@ public class MainActivity extends AppCompatActivity {
                 car++;
             }
         }
-
+        // If the number of bus stops stopped at is low then check to see how many times the
+        // algorithm predicted bus / car, if its predominantly car then stick to car.
         if (busStopCount < 2) {
-            if (car > 35) {
+            if (car >= 30) {
                 System.out.println("BusStop count is < 2, prediction:   Car");
                 return "Car";
             }
         }
 
+        // otherwise use the heuristic values
         if (busScore > carScore) {
             System.out.println("Current vehicle prediction:   Bus");
             return "Bus";
@@ -817,27 +885,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Broadcast receiver
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            // intent for location
             if (intent.getAction().equals(LocationService.BROADCAST_LOCATION_ACTION)) {
-
-
                 double latV = intent.getDoubleExtra("latitude", 0);
                 double longV = intent.getDoubleExtra("longitude", 0);
                 float speedV = intent.getFloatExtra("speed", 0);
                 speedV *= 2.23694;
-                RequestQueue queue = Volley.newRequestQueue(context);
                 TextView tvLat = findViewById(R.id.tvLat);
                 TextView tvLong = findViewById(R.id.tvLong);
                 TextView tvSpeed = findViewById(R.id.tvSpeed);
                 tvLat.setText("Lat: " + latV);
                 tvLong.setText("Long: " + longV);
                 tvSpeed.setText(String.valueOf(speedV));
+                // uncomment when using actual app
 //                lat = latV;
 //                lonG = longV;
-//                lat = 55.931848;
-//                lonG = -3.145822;
+
+                // add data to arrays so they can be recorded
                 speed.add(speedV);
                 lat2.add(latV);
                 long2.add(longV);
@@ -849,15 +917,12 @@ public class MainActivity extends AppCompatActivity {
                     lat = testLat1.get(testLocC);
                     lonG = testLong1.get(testLocC);
                     firstLat = false;
-                    //secondLat = true;
                 } else {
                     second ++;
                     lat = testLat2.get(second);
                     lonG = testLong2.get(second);
                     firstLat = true;
                 }
-
-
 
                 // end of testing
 
@@ -872,16 +937,20 @@ public class MainActivity extends AppCompatActivity {
                 //EditText edtRadius = findViewById(R.id.edtRadius);
                 //EditText edtD = findViewById(R.id.edtDuration);
 
+                // check if near bus stop
                 start = value > 0;
                 tvSStatus.setText("Near Bus stop: " + String.valueOf(start));
                 //System.out.println("Start value is: " + start);
+                // if near a bus stop then start timer
                 if (start) {
                     //System.out.println("Calling if start is true: current value of sttartMilliSeconds: " + startTimeMillis);
                     startTimeMillis = System.currentTimeMillis();
                 }
 
+
                 BusStopCallback callback = new BusStopCallback() {
                     @Override
+                    // if bus stop length is more then 0 then you are near a bus stop
                     public void onResult(int resultLength) {
                         if (resultLength > 0) {
                             //System.out.println("Near bus stop");
@@ -891,7 +960,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     @Override
+                    // Get the bus stop code for the bus stop
                     public void onAllBusStops(ArrayList<String> busses) {
+                        // Get the first bus stop code from the list
                         busStopCode = busses.get(0);
                         for (int i=0; i < busses.size(); i++) {
                             System.out.println(busses.get(i) + " bus stop code");
@@ -901,21 +972,25 @@ public class MainActivity extends AppCompatActivity {
 
                 api.getClosestStops(requestQueue, lat, lonG, 17, callback);
 
+                // Once you leave a bus stop check how long you stayed at it
                 if (!start) {
                     durationMillis = durationMillis - startTimeMillis;
                     durationMillis = Math.abs(durationMillis / 1000);
                     //System.out.println("Duration while 'start' was true: " + durationMillis + " seconds");
                     tvDuration.setText("Duration: " + String.valueOf(durationMillis));
 
+                    // if the duration is more than 20 seconds then record this bus stop
                     if (durationMillis >= 20 && durationMillis < 500) {
                         busStopCount ++;
                         tvBusStopCount.setText("Bus stop count: " + String.valueOf(busStopCount));
                     }
 
+                    //reset timers
                     startTimeMillis = 0;
                     durationMillis = System.currentTimeMillis();
                 }
 
+                // callback used to check if on a bus route and to filter the bus stops based on the routes
                 BusRouteCallback callback2 = result -> {
                     busRoutes = result;
                     for (String s: busRoutes) {
@@ -944,6 +1019,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                 };
 
+                // get the buses you are on and filter based on bus stops
                 BusRouteCallback callback3 = result -> {
                     if (busesForRoutes.isEmpty()) {
                         busesForRoutes = result;
@@ -972,21 +1048,23 @@ public class MainActivity extends AppCompatActivity {
                 api.OnBusRoute(requestQueue, lat, lonG, 10, callback2);
                 api.GetBusses(requestQueue, busStopCode, callback3);
 
+                // get the vehicle predictions
                 vType = checkVehicleType(busStopCount, busRouteInt, notBusRouteInt);
                 vehicleType.add(vType);
                 tvCurrentVehicle.setText("CurrentVehicle: " + vType);
             }
 
+            // accelerometer intent
             if (intent.getAction().equals(AccelerometerSensor.ACTION_ACCELERATION)) {
                 float x = intent.getFloatExtra("x", 0);
                 float y = intent.getFloatExtra("y", 0);
                 float z = intent.getFloatExtra("z", 0);
-                float gF = intent.getFloatExtra("gForce", 0);
+                //float gF = intent.getFloatExtra("gForce", 0);
                 // for recording acceleration
-//                float gF = intent.getFloatExtra("gForce", 0);
-//                String tt = intent.getStringExtra("time");
-//                g.add(gF);
-//                t.add(tt);
+                float gF = intent.getFloatExtra("gForce", 0);
+                String tt = intent.getStringExtra("time");
+                accSensorValue.add(gF);
+                accTime.add(tt);
                 TextView tvX = findViewById(R.id.tvX);
                 TextView tvY = findViewById(R.id.tvY);
                 TextView tvZ = findViewById(R.id.tvZ);
@@ -1001,7 +1079,7 @@ public class MainActivity extends AppCompatActivity {
                 gForce.add(gF);
             }
 
-
+            // barometer intent
             if (intent.getAction().equals(BarometerSensor.ACTION_PRESSURE)) {
                 float pressure = intent.getFloatExtra("pressure", 0);
                 TextView tvBar = findViewById(R.id.tvBar);
@@ -1009,6 +1087,7 @@ public class MainActivity extends AppCompatActivity {
                 barometer.add(pressure);
             }
 
+            // step counter intent
             if (intent.getAction().equals(StepCounter.ACTION_STEP_COUNT)) {
                 float steps = intent.getFloatExtra("steps", 0);
                 TextView tvSteps = findViewById(R.id.tvSteps);
@@ -1020,11 +1099,13 @@ public class MainActivity extends AppCompatActivity {
                 finalSteps = steps;
             }
 
+            // check if the app is on the main screen or not
             if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
                 // Screen turned on; refresh the step count
                 refreshStepCountDisplay();
             }
 
+            // orientation sensor intent
             if (intent.getAction().equals(OrientationSensor.ACTION_ORIENTATION)) {
                 String orientationStatus;
                 // Determine the orientation based on angle range
@@ -1045,14 +1126,18 @@ public class MainActivity extends AppCompatActivity {
                 tvOrient.setText("Orientation: " + orientationStatus);
             }
 
+            // intent that tells when to post a record to the DB (comes in every 10s)
             if (intent.getAction().equals(MyForegroundService.ACTION_UPDATE_TEXT)) {
-                String test = intent.getStringExtra("latitude");
+                String test = intent.getStringExtra("sample");
                 //System.out.println(test);
                 UpdateDB();
+                //UpdateDB3();
+                //System.out.println("Foreground services called now");
                 //UpdateDB2();
 
             }
 
+            // Activity recognition API intent to receive updates when a new activity is detected
             if (ActivityTransitionResult.hasResult(intent)) {
 
                 ActivityTransitionResult result = ActivityTransitionResult.extractResult(intent);
@@ -1072,12 +1157,14 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    // refresh the step count
     private void refreshStepCountDisplay() {
         int steps = readIntFromInternalStorage("steps.txt");
         TextView tvSteps = findViewById(R.id.tvSteps);
         tvSteps.setText("Steps: " + steps);
     }
 
+    // reads the data from internal storage based on a filename
     public int readIntFromInternalStorage(String filename) {
         DataInputStream dis = null;
         try {
@@ -1096,6 +1183,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // request permissions
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

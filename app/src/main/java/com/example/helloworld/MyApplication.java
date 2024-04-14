@@ -9,7 +9,8 @@ import org.acra.config.CoreConfigurationBuilder;
 import org.acra.data.StringFormat;
 import org.acra.sender.EmailIntentSender;
 import org.acra.config.MailSenderConfigurationBuilder;
-
+// Docs: https://www.acra.ch/docs/Setup
+// Used for crash reporting so logs can be analysed when bugs occur
 public class MyApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
