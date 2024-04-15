@@ -1,6 +1,6 @@
 # Dissertation_Android_App
 First, make sure the Django server is running properly. 
-This has been set up so that data is read from the TXT files and used via the Android Studio emulator. After opening the repository, launch the app inside the emulator and click the "Load" button, then "Not running." The data can be viewed using logcat.  
+This has been set up to read data from the TXT files and used via the Android Studio emulator. After opening the repository, launch the app inside the emulator and click the "Load" button, then "Not running." The data can be viewed using logcat inside Android Studio. Make sure to change the URL on line 24 in APIConnections.java with the new NGROK URL from the Django server. 
 To change what file is played back, change the file name on line 269 in MainActivity.java. 
 
 For buses, the file names include:
