@@ -32,6 +32,20 @@ For cars, the file names include:
 
 The -copy version of these files includes results from testing via the emulator. These files are located in scr/main/assets. 
 
+## Using app outdoors
+If the Django server is up and running:
+1. Comment line 630
+2. Uncomment lines 634 - 659
+3. Comment lines 665 - 689
+4. Uncomment line 695
+5. Uncomment lines 717 - 730
+6. Comment lines 737 - 753
+7. Uncomment lines 905 - 906
+8. Comment lines 915 - 925
+9. Connect the mobile to Android Studio by enabling debugging mode on the phone. Then, under emulators, select pair devices using Wi-Fi.
+10. Run and it should open on device
+ 
+
 ## Files
 - Callbacks
 > BusRouteCallback - callback for checking if on a bus route
