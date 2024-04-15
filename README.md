@@ -30,4 +30,30 @@ For cars, the file names include:
 - car-16-02-23-8.txt
 - car-16-02-23-9.txt
 
-The -copy version of these files includes results from testing via the emulator. 
+The -copy version of these files includes results from testing via the emulator. These files are located in scr/main/assets. 
+
+## Files
+- Callbacks
+> BusRouteCallback - callback for checking if on a bus route
+> BusStopCallback - callback for getting the bus number
+> PredictionCallback - callback for getting the prediction (deprecated)
+- StepCounter.java
+> Gets the step counter sensor
+- SensorAdapter.java
+> Retrieves all the sensors the phone has
+- OrientationSensor.java
+> Sensor for getting the orientation
+- LocationService.java
+> Gets the user's location
+- MyForegroundService.java
+> Service to get pings every 10 seconds so the data can be posted to the server / written to the file
+- BarometerSensor,java
+> Gets the barometer sensor
+- AcceleromterSensor
+> Gets the acceleromter
+- APIConnections.java
+> It makes all the API connections and needs the base URL provided by the Django server after setting up NGROK.
+- MainActivity.java
+> The central part of the code that launches the app and controls the broadcast receiver / ActivityRecognition API
+-MyApplication.java
+> Uses ARCA (https://www.acra.ch/docs/Setup) to get crash logs
