@@ -44,6 +44,36 @@ If the Django server is up and running:
 8. Comment lines 915 - 925
 9. Connect the mobile to Android Studio by enabling debugging mode on the phone. Then, under emulators, select pair devices using Wi-Fi.
 10. Run and it should open on device
+
+App overview:
+
+![image](https://github.com/user-attachments/assets/d9eebed4-20aa-4de1-952a-363924aec3bc)
+
+ID	Description
+1	Starts the algorithm (Changes to “Running)
+2	Updates the steps in ID 15
+3	Used to load the data when testing on an emulator
+4	Users’ latitude
+5	Users’ longitude 
+6	Users speed in mph
+7	Manual entering of the transportation the user is on, will be used in testing to ensure that the activity recognition API is correct. 
+8	G-Force calculated from accelerometer (magnitude)
+9	Accelerometer in the X-axis
+10	Accelerometer in the Y-axis
+11	Accelerometer in the Z-axis
+12	Barometer sensor readings 
+13	Used to get the closest bus stops to a user, only used when testing.
+14	Displays the results from ID 13 or displays the buses the user could be on
+15	The number of steps the user has taken
+16	The orientation of the device
+17	Transitions from the activity recognition API, entering or exiting one, such as entering a vehicle or exiting a vehicle. 
+18	Displays if near a bus stop (changes to “Near Bus stop: true/false”)
+19	Counter that updates every 5 seconds to check if the user is on a bus route
+20	If ID 18 is true and when it turns false, the duration is shown here for how long the user was near a bus stop. 
+21	Counter that updates every 5 seconds to check if the user is not on a bus route
+22	The number of bus stops the user has stopped at so far. 
+23	Prediction for the current vehicle the user may be on. 
+24	The response returned from posting a new record to the database, either success or failure. 
  
 
 ## Files
